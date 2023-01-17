@@ -1,5 +1,9 @@
-<script setup></script>
+<script setup>
+import AppHeading from "./components/AppHeading.vue";
+</script>
 
-<template></template>
+<template>
+	<AppHeading appName="Converse" />
+</template>
 
 <style scoped></style>
