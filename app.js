@@ -6,7 +6,13 @@ const createWindow = () => {
 		height: 600,
 	});
 
-	appWin.loadFile("./dist/index.html");
+	if (!app.isPackaged) {
+		console.log("App not packaged. Loaded page from localhost.");
+		appWin.webContents.openDevTools();
+		appWin.loadURL("http://localhost:5173/");
+	} else {
+		appWin.loadFile("./dist/index.html");
+	}
 };
 
 app.whenReady().then(() => {
