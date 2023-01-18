@@ -1,6 +1,7 @@
 <script setup>
 import AppHeading from "./components/AppHeading.vue";
 import ChatScreen from "./components/ChatScreen.vue";
+import StartScreen from "./components/StartScreen.vue";
 import { createClient } from "@supabase/supabase-js";
 import { ref, onBeforeMount } from "vue";
 
@@ -10,6 +11,9 @@ let allMessages = ref([]);
 let userName = ref([]);
 let msgContent = ref();
 let msgId = ref();
+
+let userClientId;
+let clientIdIsProvided = ref(false);
 
 onBeforeMount(() => {
 	api.send("send-db-data");
@@ -38,12 +42,22 @@ onBeforeMount(() => {
 		});
 	});
 });
+
+// FUNCTIONS
+function saveClientId(id) {
+	userClientId = id;
+	clientIdIsProvided.value = true;
+}
 </script>
 
 <template>
-	<AppHeading appName="Converse" />
-	<div v-for="(text, index) in allMessages" :key="index">
-		<ChatScreen :chatContent="text" :user="userName[index]" />
+	<StartScreen v-if="!clientIdIsProvided" @client-id="saveClientId" />
+	<div v-if="clientIdIsProvided">
+		<AppHeading appName="Converse" />
+		<div class="divider"></div>
+		<div v-for="(text, index) in allMessages" :key="index">
+			<ChatScreen :chatContent="text" :user="userName[index]" />
+		</div>
 	</div>
 </template>
 
