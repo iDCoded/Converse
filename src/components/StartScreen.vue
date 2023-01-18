@@ -3,7 +3,7 @@ import { ref } from "@vue/reactivity";
 
 const clientId = ref("");
 const roomName = ref("");
-const emit = defineEmits(["client-id", "room-name"]);
+const emit = defineEmits(["client-id", "room-name", "can-create-room"]);
 
 function submitId(id) {
 	if (id.length > 0) {
@@ -13,6 +13,15 @@ function submitId(id) {
 function submitRoomName(name) {
 	if (name.length > 0) {
 		emit("room-name", name);
+	}
+}
+function createRoom(id, name) {}
+function checkForId() {
+	const btn = document.querySelector("#room-name-btn");
+	if (clientId.value.length > 0) {
+		btn.classList.remove("btn-disabled");
+	} else {
+		btn.classList.add("btn-disabled");
 	}
 }
 </script>
@@ -37,9 +46,23 @@ function submitRoomName(name) {
 				class="input input-bordered w-full max-w-xs"
 				placeholder="Room Name"
 				v-model="roomName"
+				@focus="checkForId"
 			/>
-			<button class="btn btn-square" @click.prevent="submitRoomName(roomName)">
+
+			<button
+				id="room-name-btn"
+				class="btn btn-square btn-disabled"
+				@click.prevent="submitRoomName(roomName)"
+			>
 				+
+			</button>
+		</div>
+		<div>
+			<button
+				class="btn btn-info"
+				@click.prevent="createRoom(clientId, roomName)"
+			>
+				Create Room
 			</button>
 		</div>
 	</div>

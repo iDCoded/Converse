@@ -13,8 +13,8 @@ let msgContent = ref();
 let msgId = ref();
 
 let roomName = ref("");
-let userClientId;
-let clientIdIsProvided = ref(false);
+let userClientId = ref();
+let canCreateRoom = ref(false);
 
 onBeforeMount(() => {
 	api.send("send-db-data");
@@ -46,8 +46,7 @@ onBeforeMount(() => {
 
 // FUNCTIONS
 function saveClientId(id) {
-	userClientId = id;
-	clientIdIsProvided.value = true;
+	userClientId.value = id;
 }
 function saveRoomName(name) {
 	roomName.value = name;
@@ -56,11 +55,11 @@ function saveRoomName(name) {
 
 <template>
 	<StartScreen
-		v-if="!clientIdIsProvided"
+		v-if="!canCreateRoom"
 		@client-id="saveClientId"
 		@room-name="saveRoomName"
 	/>
-	<div v-if="clientIdIsProvided">
+	<div v-if="canCreateRoom">
 		<AppHeading :roomName="roomName" />
 		<div class="divider"></div>
 		<div v-for="(text, index) in allMessages" :key="index">
