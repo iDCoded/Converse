@@ -7,7 +7,9 @@ import { ref, onBeforeMount } from "vue";
 var supabase;
 
 let allMessages = ref([]);
+let userName = ref([]);
 let msgContent = ref();
+let msgId = ref();
 
 onBeforeMount(() => {
 	api.send("send-db-data");
@@ -26,6 +28,10 @@ onBeforeMount(() => {
 			content.then((args) => {
 				for (let i = 0; i < args.length; i++) {
 					msgContent.value = args[i].content;
+					msgId.value = args[i].id;
+					if (msgId.value === args[i].id) {
+						userName.value.push(args[i].name);
+					}
 					allMessages.value.push(msgContent.value);
 				}
 			});
@@ -37,7 +43,7 @@ onBeforeMount(() => {
 <template>
 	<AppHeading appName="Converse" />
 	<div v-for="(text, index) in allMessages" :key="index">
-		<ChatScreen :chatContent="text" />
+		<ChatScreen :chatContent="text" :user="userName[index]" />
 	</div>
 </template>
 
