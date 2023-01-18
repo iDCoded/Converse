@@ -27,7 +27,6 @@ onBeforeMount(() => {
 				for (let i = 0; i < args.length; i++) {
 					msgContent.value = args[i].content;
 					allMessages.value.push(msgContent.value);
-					console.log(msgContent.value);
 				}
 			});
 		});
