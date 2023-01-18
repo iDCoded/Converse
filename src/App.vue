@@ -12,6 +12,7 @@ let userName = ref([]);
 let msgContent = ref();
 let msgId = ref();
 
+let roomName = ref("");
 let userClientId;
 let clientIdIsProvided = ref(false);
 
@@ -48,12 +49,19 @@ function saveClientId(id) {
 	userClientId = id;
 	clientIdIsProvided.value = true;
 }
+function saveRoomName(name) {
+	roomName.value = name;
+}
 </script>
 
 <template>
-	<StartScreen v-if="!clientIdIsProvided" @client-id="saveClientId" />
+	<StartScreen
+		v-if="!clientIdIsProvided"
+		@client-id="saveClientId"
+		@room-name="saveRoomName"
+	/>
 	<div v-if="clientIdIsProvided">
-		<AppHeading appName="Converse" />
+		<AppHeading :roomName="roomName" />
 		<div class="divider"></div>
 		<div v-for="(text, index) in allMessages" :key="index">
 			<ChatScreen :chatContent="text" :user="userName[index]" />
