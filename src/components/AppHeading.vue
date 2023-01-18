@@ -1,5 +1,5 @@
 <template>
-	<h1>{{ appName }}</h1>
+	<h1 class="text-6xl flex justify-center">{{ appName }}</h1>
 </template>
 
 <script setup>
