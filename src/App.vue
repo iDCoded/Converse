@@ -8,11 +8,11 @@ import { ref, onBeforeMount } from "vue";
 var supabase;
 
 let allMessages = ref([]);
-let userName = ref([]);
+let username = ref([]);
 let msgContent = ref();
 let msgId = ref();
 
-let roomName = ref("");
+let roomName = ref();
 let userClientId = ref();
 let canCreateRoom = ref(false);
 
@@ -35,7 +35,7 @@ onBeforeMount(() => {
 					msgContent.value = args[i].content;
 					msgId.value = args[i].id;
 					if (msgId.value === args[i].id) {
-						userName.value.push(args[i].name);
+						username.value.push(args[i].name);
 					}
 					allMessages.value.push(msgContent.value);
 				}
@@ -46,6 +46,7 @@ onBeforeMount(() => {
 
 // FUNCTIONS
 function saveClientId(id) {
+	canCreateRoom.value = true;
 	userClientId.value = id;
 }
 function saveRoomName(name) {
@@ -63,7 +64,7 @@ function saveRoomName(name) {
 		<AppHeading :roomName="roomName" />
 		<div class="divider"></div>
 		<div v-for="(text, index) in allMessages" :key="index">
-			<ChatScreen :chatContent="text" :user="userName[index]" />
+			<ChatScreen :chatContent="text" :user="username[index]" />
 		</div>
 	</div>
 </template>

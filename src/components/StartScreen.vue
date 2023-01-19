@@ -1,13 +1,25 @@
 <script setup>
 import { ref } from "@vue/reactivity";
+import { onMounted } from "@vue/runtime-core";
+
+const canSubmitId = ref(false);
+const canSubmitRoom = ref(false);
 
 const clientId = ref("");
 const roomName = ref("");
 const emit = defineEmits(["client-id", "room-name", "can-create-room"]);
 
+onMounted(() => {
+	document.querySelector("#room-name-btn").classList.add("btn-disabled");
+	document.querySelector("#create-room-btn").classList.add("btn-disabled");
+	document.querySelector("#room-name-input").disabled = true;
+});
+
 function submitId(id) {
-	if (id.length > 0) {
-		emit("client-id", id);
+	if (canSubmitId) {
+		if (id.length > 0) {
+			emit("client-id", id);
+		}
 	}
 }
 function submitRoomName(name) {
@@ -15,13 +27,24 @@ function submitRoomName(name) {
 		emit("room-name", name);
 	}
 }
-function createRoom(id, name) {}
-function checkForId() {
-	const btn = document.querySelector("#room-name-btn");
-	if (clientId.value.length > 0) {
-		btn.classList.remove("btn-disabled");
-	} else {
-		btn.classList.add("btn-disabled");
+
+function enableSubmitId(name) {
+	if (name.length > 0) {
+		canSubmitId.value = true;
+	} else if (name.length == 0) {
+		canSubmitId.value = false;
+	}
+}
+
+function enableSubmitRoom(id) {
+	if (id.length > 0) {
+		canSubmitRoom.value = true;
+		document.querySelector("#room-name-btn").classList.remove("btn-disabled");
+		document.querySelector("#room-name-input").disabled = false;
+	} else if (id.length == 0) {
+		document.querySelector("#room-name-btn").classList.add("btn-disabled");
+		document.querySelector("#room-name-input").disabled = true;
+		canSubmitRoom.value = false;
 	}
 }
 </script>
@@ -35,6 +58,7 @@ function checkForId() {
 				class="input input-bordered w-full max-w-xs"
 				placeholder="Room ID"
 				v-model="clientId"
+				@keyup="enableSubmitRoom(clientId)"
 			/>
 			<button class="btn btn-square" @click.prevent="submitId(clientId)">
 				+
@@ -44,14 +68,15 @@ function checkForId() {
 			<input
 				type="text"
 				class="input input-bordered w-full max-w-xs"
+				id="room-name-input"
 				placeholder="Room Name"
 				v-model="roomName"
-				@focus="checkForId"
+				@keyup="enableSubmitId(roomName)"
 			/>
 
 			<button
 				id="room-name-btn"
-				class="btn btn-square btn-disabled"
+				class="btn btn-square"
 				@click.prevent="submitRoomName(roomName)"
 			>
 				+
@@ -60,6 +85,7 @@ function checkForId() {
 		<div>
 			<button
 				class="btn btn-info"
+				id="create-room-btn"
 				@click.prevent="createRoom(clientId, roomName)"
 			>
 				Create Room
