@@ -52,6 +52,10 @@ function saveClientId(id) {
 function saveRoomName(name) {
 	roomName.value = name;
 }
+
+function createRoom(id, name) {
+	console.log(id, name);
+}
 </script>
 
 <template>
@@ -59,6 +63,7 @@ function saveRoomName(name) {
 		v-if="!canCreateRoom"
 		@client-id="saveClientId"
 		@room-name="saveRoomName"
+		@create-room="createRoom"
 	/>
 	<div v-if="canCreateRoom">
 		<AppHeading :roomName="roomName" />

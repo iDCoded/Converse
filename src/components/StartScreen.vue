@@ -7,7 +7,7 @@ const canSubmitRoom = ref(false);
 
 const clientId = ref("");
 const roomName = ref("");
-const emit = defineEmits(["client-id", "room-name", "can-create-room"]);
+const emit = defineEmits(["client-id", "room-name", "create-room"]);
 
 onMounted(() => {
 	document.querySelector("#room-name-btn").classList.add("btn-disabled");
@@ -40,12 +40,18 @@ function enableSubmitRoom(id) {
 	if (id.length > 0) {
 		canSubmitRoom.value = true;
 		document.querySelector("#room-name-btn").classList.remove("btn-disabled");
+		document.querySelector("#create-room-btn").classList.remove("btn-disabled");
 		document.querySelector("#room-name-input").disabled = false;
 	} else if (id.length == 0) {
 		document.querySelector("#room-name-btn").classList.add("btn-disabled");
+		document.querySelector("#create-room-btn").classList.remove("btn-disabled");
 		document.querySelector("#room-name-input").disabled = true;
 		canSubmitRoom.value = false;
 	}
+}
+
+function createRoom(id, name) {
+	emit("create-room", id, name);
 }
 </script>
 
