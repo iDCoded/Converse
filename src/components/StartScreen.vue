@@ -60,7 +60,10 @@ function enableSubmitRoom(id) {
 				v-model="clientId"
 				@keyup="enableSubmitRoom(clientId)"
 			/>
-			<button class="btn btn-square" @click.prevent="submitId(clientId)">
+			<button
+				class="btn btn-square"
+				@click.prevent="submitId(clientId), submitRoomName(roomName)"
+			>
 				+
 			</button>
 		</div>
