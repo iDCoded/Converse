@@ -46,7 +46,6 @@ onBeforeMount(() => {
 
 // FUNCTIONS
 function saveClientId(id) {
-	canCreateRoom.value = true;
 	userClientId.value = id;
 }
 function saveRoomName(name) {
@@ -54,7 +53,9 @@ function saveRoomName(name) {
 }
 
 function createRoom(id, name) {
-	console.log(id, name);
+	canCreateRoom.value = true;
+	roomName.value = name;
+	userClientId.value = id;
 }
 </script>
 
