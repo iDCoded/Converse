@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
+import { changeButtonState } from "../scripts/changeButtonState.js";
 
 const canSubmitId = ref(false);
 const canSubmitRoom = ref(false);
@@ -10,9 +11,9 @@ const roomName = ref("");
 const emit = defineEmits(["client-id", "room-name", "create-room"]);
 
 onMounted(() => {
-	document.querySelector("#room-name-btn").classList.add("btn-disabled");
-	document.querySelector("#create-room-btn").classList.add("btn-disabled");
 	document.querySelector("#room-name-input").disabled = true;
+	changeButtonState("create-room-btn", "disabled");
+	changeButtonState("room-name-btn", "disabled");
 });
 
 function submitId(id) {
@@ -39,12 +40,12 @@ function enableSubmitId(name) {
 function enableSubmitRoom(id) {
 	if (id.length > 0) {
 		canSubmitRoom.value = true;
-		document.querySelector("#room-name-btn").classList.remove("btn-disabled");
-		document.querySelector("#create-room-btn").classList.remove("btn-disabled");
+		changeButtonState("room-name-btn", "enabled");
+		changeButtonState("create-room-btn", "enabled");
 		document.querySelector("#room-name-input").disabled = false;
 	} else if (id.length == 0) {
-		document.querySelector("#room-name-btn").classList.add("btn-disabled");
-		document.querySelector("#create-room-btn").classList.remove("btn-disabled");
+		changeButtonState("room-name-btn", "disabled");
+		changeButtonState("create-room-btn", "enabled");
 		document.querySelector("#room-name-input").disabled = true;
 		canSubmitRoom.value = false;
 	}
