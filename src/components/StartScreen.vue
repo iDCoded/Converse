@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
+import { changeButtonState } from "../scripts/changeButtonState.js";
 
 const canSubmitId = ref(false);
 const canSubmitRoom = ref(false);
@@ -8,24 +9,6 @@ const canSubmitRoom = ref(false);
 const clientId = ref("");
 const roomName = ref("");
 const emit = defineEmits(["client-id", "room-name", "create-room"]);
-
-/**
- *
- * @param {String} id Identifier of the Button HTML ELement.
- * @param {String} state The preferred state of the button. `enabled` or  `disabled`
- */
-function changeButtonState(id, state) {
-	const targetButton = document.querySelector("#" + id);
-	if (targetButton) {
-		if (state == "disabled") {
-			targetButton.classList.add("btn-disabled");
-		} else if (state == "enabled") {
-			targetButton.classList.remove("btn-disabled");
-		}
-	} else {
-		console.error("Button not found. Make sure the ID is correct");
-	}
-}
 
 onMounted(() => {
 	document.querySelector("#room-name-input").disabled = true;
